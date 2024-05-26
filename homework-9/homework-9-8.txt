@@ -1,0 +1,36 @@
+8. Жучки: що неправильно у цій програмі?
+
+#include <iostream>
+
+using namespace std;
+
+class Cat
+{
+public:
+	Cat(int age) { itsAge = age; }
+	~Cat() {}
+	int GetAge() const { return itsAge; }
+
+private:
+	int itsAge;
+};
+
+Cat &MakeCat(int age);
+
+int main()
+{
+	int age = 7;
+	Cat Boots = MakeCat(age);
+	cout << "Boots is: " << Boots.GetAge() << " years old" << endl;
+	return 0;
+}
+
+Cat &MakeCat(int age)
+{
+	Cat *pCat = new Cat(age);
+	return *pCat;
+}
+
+
+- функція об'єкту Cat MakeCat є посиланням, що взаємодіє з динамічною пам'яттю напряму; для взаємодією з динамічною пам'яттю краще користуватись вказівниками;
+- відсутній delete у тілі функції main, що призводить до витоку пам'яті;
