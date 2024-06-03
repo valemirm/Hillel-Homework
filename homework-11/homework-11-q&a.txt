@@ -1,0 +1,44 @@
+6. Жучки: що неправильно у наступному прикладі використання оператора присвоєння?
+
+SQUARE SQUARE::operator=(const SQUARE &rhs)
+{
+	itsSide = new int;
+	*itsSide = rhs.GetSide();
+	return *this:
+}
+
+- опечатка в рядку 7 - : замість ;
+- оператор присвоєння має повертати посилання на об'єкт
+- відсутнє видалення пам'яті, що призведе до витоку пам'яті  
+- немає перевірки рівності, щоб не маніпулювати пам'яттю, якщо є спроба присвоїти об'єкт самому собі типу Square1 = Square1
+
+правильно: 
+
+SQUARE& SQUARE::operator=(const SQUARE &rhs)
+{
+    if (this == &rhs)
+        return *this;
+    else 
+    delete itsSide;
+	itsSide = new int;
+	*itsSide = rhs.GetSide();
+	return *this;
+}
+
+7. Жучки: що є неправильним у наступному прикладі використання оператора сумування?
+
+VeryShort VeryShort::operator+(const VeryShort &rhs)
+{
+	itsVal += rhs.GetItsVal();
+	return *this;
+}
+
+- оператор + в цьому випадку змінює значення об'єкту, хоча не повинен; можна додати const, щоб вказати, що оператор не має змінювати значення об'єктів; 
+- для суми необхідно повернути новий об'єкт, а не посилання на теперішній об'єкт; 
+
+правильно: 
+
+VeryShort VeryShort::operator+(const VeryShort &rhs) const
+{
+	return VeryShort(itsVal + rhs.GetItsVal());
+}
