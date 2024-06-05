@@ -1,0 +1,35 @@
+2. Жучки: що неправильно у наступному програмному коді?
+
+void SomeFunction(Shape);
+Shape *pRect = new Rectangle;
+SomeFunction(*pRect);
+
+- функція приймає параметр за значенням, та замість Shape отримує Rectangle; через це Rectangle урізається і від нього лишається лише та частина, яка належить Shapе;
+краще передавати через вказівник або через посилання, наприклад:
+
+void SomeFunction(const *Shape pShape);
+Shape *pRect = new Rectangle;
+SomeFunction(pRect);
+delete pRect;
+
+3. Жучки: що неправильно у наступному програмному коді?
+
+class Shape
+{
+public:
+	Shape();
+	virtual ~Shape();
+	virtual Shape(const Shape&);
+};
+
+- неможливо конструктор копіювальник визначити як віртуальний, замість цього треба створити метод clone;
+
+class Shape
+{
+public:
+	Shape();
+	virtual ~Shape();
+	Shape(const Shape&);
+
+    virtual Shape* clone() const { return new Shape(*this); }
+};
