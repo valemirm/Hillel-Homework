@@ -1,0 +1,79 @@
+5. Жучки: що неправильно у цій програмі?
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Animal;
+
+void setValue(Animal &, int);
+
+class Animal
+{
+public:
+	int GetWeight() const { return itsWeight; }
+	int GetAge() const { return itsAge; }
+
+private:
+	int itsWeight;
+	int itsAge;
+};
+
+void setValue(Animal &theAnimal, int theWeight)
+{
+	friend class Animal;
+	theAnimal.itsWeight = theWeight;
+}
+
+int main()
+{
+	Animal peppy;
+	setValue(peppy, 5);
+	return 0;
+}
+
+- використання friend має відбуватись у самому оголошенні класу, а не у функції окремо; через це theAnimal.itsWeight лишається недосяжним для функції;
+
+7. Жучки: що неправильно у цій програмі?
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Animal;
+
+void setValue(Animal &, int);
+
+void setValue(Animal &, int, int);
+
+class Animal
+{
+	friend void setValue(Animal &, int);
+
+private:
+	int itsWeight;
+	int itsAge;
+};
+
+void setValue(Animal &theAnimal, int theWeight)
+{
+	theAnimal.itsWeight = theWeight;
+}
+
+void setValue(Animal &theAnimal, int theWeight, int theAge)
+{
+	theAnimal.itsWeight = theWeight;
+	theAnimal.itsAge = theAge;
+}
+
+int main()
+{
+	Animal peppy;
+	setValue(peppy, 5);
+	setValue(peppy, 7, 9);
+	return 0;
+}
+
+- friend оголошена лише для першого варіанту сеттера, чий прототип у рядку 47 даного файлу; прототип у рядку 49 не оголошено дружнім всередині класу, через що він не має доступу до закритив членів класу; 
