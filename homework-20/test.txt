@@ -1,0 +1,9 @@
+Here is a collection of prinatable characters and symbols:
+
+abcdefghigklmnopqrstuvwxyz
+1234567890
+.,;:'"/\|
+
+Here are non-printables:
+
+¶°↵→¤
