@@ -1,0 +1,47 @@
+5. Жучки: що неправильно в наступному коді?
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class xOutOfMemory
+{
+public:
+    xOutOfMemory()
+    {
+        theMsg = new char[20];
+        strcpy(theMsg, "error in memory");
+    }
+    ~xOutOfMemory()
+    {
+        delete[] theMsg;
+        cout << "Memory restored. " << endl;
+    }
+    char *Message() { return theMsg; }
+
+private:
+    char *theMsg;
+};
+
+int main()
+{
+    try
+    {
+        char *var = new char;
+        if (var == nullptr)
+        {
+            xOutOfMemory *px = new xOutOfMemory;
+            throw px;
+        }
+    }
+    catch (xOutOfMemory *theException)
+    {
+        cout << theException->Message() << endl;
+        delete theException;
+    }
+    return 0;
+}
+
+
+- у даному лістингу відсутнє звільнення пам'яті для var, що призводить до витоку пам'яті;
+- викидання виключення (рядок 33, 34) виконується через вказівник та після цього пам'ять не звільняється;  
